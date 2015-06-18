@@ -1,0 +1,18 @@
+CREATE PROCEDURE `inscribir_edfisica`(dni_bus INTEGER, edfisica_bus integer, fecha_bus DATE, usuario_bus VARCHAR(11))
+BEGIN
+
+	INSERT INTO `alumnos_edfisica` (`dni`, `id_edfisica`, `fecha`, `usuario`)
+	VALUES (dni_bus, edfisica_bus, fecha_bus, usuario_bus);
+	
+	UPDATE `alumnos` 
+	SET `id_alumno_edfisica` = (SELECT `id_alumno_edfisica` FROM `alumnos_edfisica` WHERE `dni`=dni_bus AND `id_edfisica`= edfisica_bus AND `fecha`=fecha_bus AND `usuario`=usuario_bus)
+	WHERE `dni` = dni_bus;
+	
+	SELECT aef.`id_alumno_edfisica`, ef.`descripcion` AS educacion_fisica, aef.`fecha`, u.`nombre` AS usuario
+	FROM `alumnos_edfisica` aef
+        INNER JOIN `educacion_fisica` ef on ef.`id_edfisica` = aef.`id_edfisica` 
+	INNER JOIN `usuarios` u ON u.`nombre_usuario` = aef.`usuario`
+	WHERE aef.`dni` = dni_bus AND aef.`id_edfisica`=edfisica_bus AND aef.`fecha`=fecha_bus AND aef.`usuario`=usuario_bus;
+	
+END
+

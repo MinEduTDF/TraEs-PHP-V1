@@ -1,0 +1,31 @@
+DELIMITER ;;
+CREATE PROCEDURE `buscar_alumno`(apellido_bus VARCHAR(60), dni_bus INTEGER)
+BEGIN
+
+IF dni_bus = 0 THEN 
+
+SELECT a.`apellido`, a.`nombre`, a.`dni`, a.`foto`, t.`descripcion` AS turno, c.`descripcion` AS curso, d.`descripcion` AS division
+FROM `alumnos` a
+LEFT OUTER JOIN `alumnos_cursos` ac ON ac.`id_alumno_curso` = a.`id_alumno_curso`
+LEFT OUTER JOIN `turnos` t ON t.`id_turno` = ac.`id_turno`
+LEFT OUTER JOIN `cursos` c ON c.`id_curso` = ac.`id_curso`
+LEFT OUTER JOIN `divisiones` d ON d.`id_division` = ac.`id_division`
+WHERE a.`apellido` LIKE apellido_bus 
+AND a.`activo` = 0
+ORDER BY a.`apellido`, t.`id_turno`, c.`id_curso`, d.`id_division`;
+
+ELSE
+
+SELECT a.`apellido`, a.`nombre`, a.`dni`, a.`foto`, t.`descripcion` AS turno, c.`descripcion` AS curso, d.`descripcion` AS division
+FROM `alumnos` a
+LEFT OUTER JOIN `alumnos_cursos` ac ON ac.`id_alumno_curso` = a.`id_alumno_curso`
+LEFT OUTER JOIN `turnos` t ON t.`id_turno` = ac.`id_turno`
+LEFT OUTER JOIN `cursos` c ON c.`id_curso` = ac.`id_curso`
+LEFT OUTER JOIN `divisiones` d ON d.`id_division` = ac.`id_division`
+WHERE a.`dni` = dni_bus
+AND a.`activo` = 0
+ORDER BY a.`apellido`, t.`id_turno`, c.`id_curso`, d.`id_division`;
+
+END IF; 
+END;;
+DELIMITER ;

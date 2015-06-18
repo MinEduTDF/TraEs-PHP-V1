@@ -1,0 +1,20 @@
+CREATE PROCEDURE `inscribir_taller`(dni_bus INTEGER, taller_bus VARCHAR(1), curso_bus INTEGER, division_bus INTEGER, especializacion_bus integer, fecha_bus DATE, usuario_bus VARCHAR(11))
+BEGIN
+
+	INSERT INTO `alumnos_talleres` (`dni`, `id_taller`, `id_curso`, `id_division`, `id_especializacion`, `fecha`, `usuario`)
+	VALUES (dni_bus, taller_bus, curso_bus, division_bus, especializacion_bus, fecha_bus, usuario_bus);
+	
+	UPDATE `alumnos` 
+	SET `id_alumno_taller` = (SELECT `id_alumno_taller` FROM `alumnos_talleres` WHERE `dni`=dni_bus AND `id_taller`=taller_bus AND `id_curso`=curso_bus AND `id_division`=division_bus AND `id_especializacion`=especializacion_bus AND `fecha`=fecha_bus AND `usuario`=usuario_bus)
+	WHERE `dni` = dni_bus;
+	
+	SELECT at.`id_alumno_taller`, t.`descripcion` AS taller, c.`descripcion` AS curso, d.`descripcion` AS division, e.`descripcion` AS especializacion, at.`fecha`, u.`nombre` AS usuario
+	FROM `alumnos_talleres` at
+	INNER JOIN `talleres` t ON t.`id_taller` = at.`id_taller`
+	INNER JOIN `cursos` c ON c.`id_curso` = at.`id_curso`
+	INNER JOIN `divisiones` d ON d.`id_division` = at.`id_division`
+        INNER JOIN `especializaciones`e on e.`id_especializacion` = at.`id_especializacion` 
+	INNER JOIN `usuarios` u ON u.`nombre_usuario` = at.`usuario`
+	WHERE at.`dni` = dni_bus AND at.`id_taller`=taller_bus AND at.`id_curso`=curso_bus AND at.`id_division`=division_bus AND at.`id_especializacion`=especializacion_bus AND at.`fecha`=fecha_bus AND at.`usuario`=usuario_bus;
+	
+END

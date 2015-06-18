@@ -1,0 +1,34 @@
+DELIMITER ;;
+CREATE PROCEDURE `novedad_alumno`(dni_bus INTEGER, turno_bus VARCHAR(1), curso_bus INTEGER, division_bus INTEGER, fecha_bus DATE, usuario_bus VARCHAR(11), estado_bus varchar(1))
+BEGIN
+IF estado_bus = "P" THEN
+	INSERT INTO `alumnos_cursos` (`dni`, `id_turno`, `id_curso`, `id_division`, `fecha`, `usuario`)
+	VALUES (dni_bus, turno_bus, curso_bus, division_bus, fecha_bus, usuario_bus);
+	
+	UPDATE `alumnos` 
+	SET `id_alumno_curso` = (SELECT `id_alumno_curso` FROM `alumnos_cursos` WHERE `dni`=dni_bus AND `id_turno`=turno_bus AND `id_curso`=curso_bus AND `id_division`=division_bus AND `fecha`=fecha_bus AND `usuario`=usuario_bus)
+	WHERE `dni` = dni_bus;
+ELSEIF estado_bus = "E" THEN
+	UPDATE `alumnos`
+	SET `id_alumno_curso` = 0,
+	`activo` = 1
+	WHERE `dni` = dni_bus;
+ELSEIF estado_bus = "C" THEN
+	UPDATE `alumnos`
+	SET `id_alumno_curso` = 0,
+	`activo` = 2
+	WHERE `dni` = dni_bus;
+ELSEIF estado_bus = "A" THEN
+	UPDATE `alumnos`
+	SET `id_alumno_curso` = 0,
+	`activo` = 3
+	WHERE `dni` = dni_bus;
+ELSEIF estado_bus = "O" THEN
+	UPDATE `alumnos`
+	SET `id_alumno_curso` = 0,
+	`activo` = 4
+	WHERE `dni` = dni_bus;
+END	IF;
+
+END;;
+DELIMITER ;

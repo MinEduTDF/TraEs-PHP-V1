@@ -1,0 +1,22 @@
+DELIMITER ;;
+CREATE PROCEDURE `agregar_alumno`(IN `f_nombre` VARCHAR(60), IN `f_apellido` VARCHAR(60), IN `f_alias` VARCHAR(50), IN `f_dni` INT, IN `f_lugarnac` INT, IN `f_nacionalidad` INT, IN `f_fecha_nac` DATETIME, IN `f_domicilio` VARCHAR(100), IN `f_telefono` VARCHAR(60), IN `f_mail` VARCHAR(100), IN `f_genero` VARCHAR(1), IN `f_observacion` TEXT, IN `f_foto` VARCHAR(255), IN `f_activo` TINYINT, IN `f_primaria` INT, IN `f_secundario` INT, IN `f_medico` TINYINT, IN `f_salida` TINYINT)
+BEGIN
+
+
+IF (SELECT `dni` FROM `alumnos` WHERE `dni` = f_dni) IS NULL THEN
+	INSERT INTO `alumnos` (`dni`, `apellido`, `nombre`, `alias`, `genero`, `lugar_nac`, `nacionalidad`, `fecha_nac`, `domicilio`, `telefono`, `mail`, `observacion`, `id_primaria`, `id_secundario`, `auto_medico`, `auto_salida`, `foto`, `activo`)
+	VALUES (f_dni, f_apellido, f_nombre, f_alias, f_genero, f_lugarnac, f_nacionalidad, f_fecha_nac, f_domicilio, f_telefono, f_mail, f_observacion, f_primaria, f_secundario, f_medico, f_salida, f_foto, f_activo);
+
+	SELECT a.`nombre` AS nombre_alumno, a.`apellido`, a.`dni`, 'nuevo' AS estado FROM alumnos a 
+	WHERE a.`dni` = f_dni;
+
+ELSE
+	SELECT a.`nombre` AS nombre_alumno, a.`apellido`, a.`dni`, 'cargado' AS estado FROM alumnos a 
+	WHERE a.`dni` = f_dni;
+	
+
+END IF;
+
+
+END;;
+DELIMITER ;

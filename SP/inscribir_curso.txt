@@ -1,0 +1,21 @@
+DELIMITER ;;
+CREATE PROCEDURE `inscribir_curso`(dni_bus INTEGER, turno_bus VARCHAR(1), curso_bus INTEGER, division_bus INTEGER, fecha_bus DATE, usuario_bus VARCHAR(11))
+BEGIN
+
+	INSERT INTO `alumnos_cursos` (`dni`, `id_turno`, `id_curso`, `id_division`, `fecha`, `usuario`)
+	VALUES (dni_bus, turno_bus, curso_bus, division_bus, fecha_bus, usuario_bus);
+	
+	UPDATE `alumnos` 
+	SET `id_alumno_curso` = (SELECT `id_alumno_curso` FROM `alumnos_cursos` WHERE `dni`=dni_bus AND `id_turno`=turno_bus AND `id_curso`=curso_bus AND `id_division`=division_bus AND `fecha`=fecha_bus AND `usuario`=usuario_bus)
+	WHERE `dni` = dni_bus;
+	
+	SELECT ac.`id_alumno_curso`, t.`descripcion` AS turno, c.`descripcion` AS curso, d.`descripcion` AS division, ac.`fecha`, u.`nombre` AS usuario
+	FROM `alumnos_cursos` ac
+	INNER JOIN `turnos` t ON t.`id_turno` = ac.`id_turno`
+	INNER JOIN `cursos` c ON c.`id_curso` = ac.`id_curso`
+	INNER JOIN `divisiones` d ON d.`id_division` = ac.`id_division`
+	INNER JOIN `usuarios` u ON u.`nombre_usuario` = ac.`usuario`
+	WHERE ac.`dni` = dni_bus AND ac.`id_turno`=turno_bus AND ac.`id_curso`=curso_bus AND ac.`id_division`=division_bus AND ac.`fecha`=fecha_bus AND ac.`usuario`=usuario_bus;
+	
+END;;
+DELIMITER ;

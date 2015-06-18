@@ -1,0 +1,13 @@
+Archivos que se deben modificar
+
+Classes/Configuration.php
+    -- Datos de conexion a la base de datos.
+    
+includes/common.php
+    -- URL y ubicacion de los archivos.
+    
+includes/footer.php
+includes/header.php
+
+includes/valid_session.php
+    -- Tener en cuenta la variable utilizada para iniciar la Sesion.

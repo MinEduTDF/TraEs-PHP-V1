@@ -1,0 +1,9 @@
+DELIMITER ;;
+CREATE PROCEDURE `tomar_lista`(f_fecha DATE, f_dni INT, f_estado VARCHAR(1), f_turno VARCHAR(1), f_curso INT, f_division INT, f_usuario VARCHAR(11))
+BEGIN
+
+INSERT INTO `lista_alumnos` (`fecha`, `dni`, `estado`, `turno`, `curso`, `division`, `usuario`)
+VALUES (f_fecha, f_dni, f_estado, f_turno, f_curso, f_division, f_usuario);
+
+END;;
+DELIMITER ;

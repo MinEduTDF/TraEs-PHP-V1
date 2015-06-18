@@ -1,0 +1,59 @@
+SELECT a.ausentes, aj.ausentes_jus, tc.tardes_cuarto, tjc.tardes_cuarto_jus, tm.tardes_media, tjm.tardes_media_jus, ap.aus_permanencia, apj.aus_permanencia_jus,
+at.ausentes_taller, ajt.ausentes_jus_taller, tct.tardes_cuarto_taller, tjct.tardes_cuarto_jus_taller, tmt.tardes_media_taller, tjmt.tardes_media_jus_taller, apt.aus_permanencia_taller, apjt.aus_permanencia_jus_taller,
+ae.ausentes_edfisica, aje.ausentes_jus_edfisica, tce.tardes_cuarto_edfisica, tjce.tardes_cuarto_jus_edfisica, tme.tardes_media_edfisica, tjme.tardes_media_jus_edfisica, ape.aus_permanencia_edfisica, apje.aus_permanencia_jus_edfisica
+
+FROM `lista_alumnos` la
+LEFT OUTER JOIN 
+(SELECT dni, count(*) AS ausentes FROM `lista_alumnos` WHERE `tipo_curso`='R' AND `estado` = 'A' AND (`justificado`IS NULL OR `justificado`=0) GROUP BY dni, `estado`) a ON a.dni = la.dni
+LEFT OUTER JOIN 
+(SELECT dni, count(*) AS ausentes_jus FROM `lista_alumnos` WHERE `tipo_curso`='R' AND `estado` = 'A' AND `justificado`=1 GROUP BY dni, `estado`) aj ON aj.dni = la.dni
+LEFT OUTER JOIN 
+(SELECT dni, count(*) AS tardes_cuarto FROM `lista_alumnos` WHERE `tipo_curso`='R' AND `estado` = 'TC' AND (`justificado`IS NULL OR `justificado`=0) GROUP BY dni, `estado`) tc ON tc.dni = la.dni
+LEFT OUTER JOIN 
+(SELECT dni, count(*) AS tardes_cuarto_jus FROM `lista_alumnos` WHERE `tipo_curso`='R' AND `estado` = 'TC' AND `justificado`=1 GROUP BY dni, `estado`) tjc ON tjc.dni = la.dni
+LEFT OUTER JOIN 
+(SELECT dni, count(*) AS tardes_media FROM `lista_alumnos` WHERE `tipo_curso`='R' AND `estado` = 'TM' AND (`justificado`IS NULL OR `justificado`=0) GROUP BY dni, `estado`) tm ON tm.dni = la.dni
+LEFT OUTER JOIN 
+(SELECT dni, count(*) AS tardes_media_jus FROM `lista_alumnos` WHERE `tipo_curso`='R' AND `estado` = 'TM' AND `justificado`=1 GROUP BY dni, `estado`) tjm ON tjm.dni = la.dni
+LEFT OUTER JOIN 
+(SELECT dni, count(*) AS aus_permanencia FROM `lista_alumnos` WHERE `tipo_curso`='R' AND `estado` = 'AP' AND (`justificado`IS NULL OR `justificado`=0) GROUP BY dni, `estado`) ap ON ap.dni = la.dni
+LEFT OUTER JOIN 
+(SELECT dni, count(*) AS aus_permanencia_jus FROM `lista_alumnos` WHERE `tipo_curso`='R' AND `estado` = 'AP' AND `justificado`=1 GROUP BY dni, `estado`) apj ON apj.dni = la.dni
+
+LEFT OUTER JOIN 
+(SELECT dni, count(*) AS ausentes_taller FROM `lista_alumnos` WHERE `tipo_curso`='T' AND `estado` = 'A' AND (`justificado`IS NULL OR `justificado`=0) GROUP BY dni, `estado`) at ON at.dni = la.dni
+LEFT OUTER JOIN 
+(SELECT dni, count(*) AS ausentes_jus_taller FROM `lista_alumnos` WHERE `tipo_curso`='T' AND `estado` = 'A' AND `justificado`=1 GROUP BY dni, `estado`) ajt ON ajt.dni = la.dni
+LEFT OUTER JOIN 
+(SELECT dni, count(*) AS tardes_cuarto_taller FROM `lista_alumnos` WHERE `tipo_curso`='T' AND `estado` = 'TC' AND (`justificado`IS NULL OR `justificado`=0) GROUP BY dni, `estado`) tct ON tct.dni = la.dni
+LEFT OUTER JOIN 
+(SELECT dni, count(*) AS tardes_cuarto_jus_taller FROM `lista_alumnos` WHERE `tipo_curso`='T' AND `estado` = 'TC' AND `justificado`=1 GROUP BY dni, `estado`) tjct ON tjct.dni = la.dni
+LEFT OUTER JOIN 
+(SELECT dni, count(*) AS tardes_media_taller FROM `lista_alumnos` WHERE `tipo_curso`='T' AND `estado` = 'TM' AND (`justificado`IS NULL OR `justificado`=0) GROUP BY dni, `estado`) tmt ON tmt.dni = la.dni
+LEFT OUTER JOIN 
+(SELECT dni, count(*) AS tardes_media_jus_taller FROM `lista_alumnos` WHERE `tipo_curso`='T' AND `estado` = 'TM' AND `justificado`=1 GROUP BY dni, `estado`) tjmt ON tjmt.dni = la.dni
+LEFT OUTER JOIN 
+(SELECT dni, count(*) AS aus_permanencia_taller FROM `lista_alumnos` WHERE `tipo_curso`='T' AND `estado` = 'AP' AND (`justificado`IS NULL OR `justificado`=0) GROUP BY dni, `estado`) apt ON apt.dni = la.dni
+LEFT OUTER JOIN 
+(SELECT dni, count(*) AS aus_permanencia_jus_taller FROM `lista_alumnos` WHERE `tipo_curso`='T' AND `estado` = 'AP' AND `justificado`=1 GROUP BY dni, `estado`) apjt ON apjt.dni = la.dni
+
+LEFT OUTER JOIN 
+(SELECT dni, count(*) AS ausentes_edfisica FROM `lista_alumnos` WHERE `tipo_curso`='E' AND `estado` = 'A' AND (`justificado`IS NULL OR `justificado`=0) GROUP BY dni, `estado`) ae ON ae.dni = la.dni
+LEFT OUTER JOIN 
+(SELECT dni, count(*) AS ausentes_jus_edfisica FROM `lista_alumnos` WHERE `tipo_curso`='E' AND `estado` = 'A' AND `justificado`=1 GROUP BY dni, `estado`) aje ON aje.dni = la.dni
+LEFT OUTER JOIN 
+(SELECT dni, count(*) AS tardes_cuarto_edfisica FROM `lista_alumnos` WHERE `tipo_curso`='E' AND `estado` = 'TC' AND (`justificado`IS NULL OR `justificado`=0) GROUP BY dni, `estado`) tce ON tce.dni = la.dni
+LEFT OUTER JOIN 
+(SELECT dni, count(*) AS tardes_cuarto_jus_edfisica FROM `lista_alumnos` WHERE `tipo_curso`='E' AND `estado` = 'TC' AND `justificado`=1 GROUP BY dni, `estado`) tjce ON tjce.dni = la.dni
+LEFT OUTER JOIN 
+(SELECT dni, count(*) AS tardes_media_edfisica FROM `lista_alumnos` WHERE `tipo_curso`='E' AND `estado` = 'TM' AND (`justificado`IS NULL OR `justificado`=0) GROUP BY dni, `estado`) tme ON tme.dni = la.dni
+LEFT OUTER JOIN 
+(SELECT dni, count(*) AS tardes_media_jus_edfisica FROM `lista_alumnos` WHERE `tipo_curso`='E' AND `estado` = 'TM' AND `justificado`=1 GROUP BY dni, `estado`) tjme ON tjme.dni = la.dni
+LEFT OUTER JOIN 
+(SELECT dni, count(*) AS aus_permanencia_edfisica FROM `lista_alumnos` WHERE `tipo_curso`='E' AND `estado` = 'AP' AND (`justificado`IS NULL OR `justificado`=0) GROUP BY dni, `estado`) ape ON ape.dni = la.dni
+LEFT OUTER JOIN 
+(SELECT dni, count(*) AS aus_permanencia_jus_edfisica FROM `lista_alumnos` WHERE `tipo_curso`='E' AND `estado` = 'AP' AND `justificado`=1 GROUP BY dni, `estado`) apje ON apje.dni = la.dni
+
+WHERE la.dni = '".$dni_alumno."' AND extract(YEAR FROM fecha)= ".$anio_escolar." 
+GROUP BY a.ausentes, aj.ausentes_jus, tc.tardes_cuarto, tjc.tardes_cuarto_jus, tm.tardes_media, tjm.tardes_media_jus, ap.aus_permanencia, apj.aus_permanencia_jus, at.ausentes_taller, ajt.ausentes_jus_taller, tct.tardes_cuarto_taller, tjct.tardes_cuarto_jus_taller, tmt.tardes_media_taller, tjmt.tardes_media_jus_taller, apt.aus_permanencia_taller, apjt.aus_permanencia_jus_taller,
+ae.ausentes_edfisica, aje.ausentes_jus_edfisica, tce.tardes_cuarto_edfisica, tjce.tardes_cuarto_jus_edfisica, tme.tardes_media_edfisica, tjme.tardes_media_jus_edfisica, ape.aus_permanencia_edfisica, apje.aus_permanencia_jus_edfisica;

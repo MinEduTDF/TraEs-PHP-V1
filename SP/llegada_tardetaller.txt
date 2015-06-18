@@ -1,0 +1,13 @@
+DELIMITER ;;
+CREATE PROCEDURE `llegada_tardetaller`(f_id INT, f_estado VARCHAR(1), f_jus TINYINT, f_obs VARCHAR(200), f_usuario VARCHAR(11))
+BEGIN
+
+UPDATE `lista_alumnostaller` 
+SET `estado` = f_estado,
+`justificado` = f_jus,
+`observacion` = f_obs,
+`usuario` = f_usuario
+WHERE `id` = f_id;
+
+END;;
+DELIMITER ;

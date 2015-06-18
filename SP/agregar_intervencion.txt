@@ -1,0 +1,13 @@
+DELIMITER ;;
+CREATE PROCEDURE `agregar_intervencion`(`f_alumno` int, `f_fecha` DATETIME, `f_usuario` VARCHAR(11), `f_titulo` VARCHAR(60), `f_texto` LONGTEXT)
+BEGIN
+
+	INSERT INTO `intervencion_cabecera` (`fecha`, `usuario`, `titulo`, `dni_alumno`)
+	VALUES (f_fecha, f_usuario, f_titulo, f_alumno);
+
+	
+	INSERT INTO `intervencion_cuerpo` (`id_intervencion`, `texto`)
+	VALUES ((SELECT max(`id_intervencion`) FROM `intervencion_cabecera`), f_texto);
+
+END;;
+DELIMITER ;

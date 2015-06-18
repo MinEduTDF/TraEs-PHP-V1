@@ -1,0 +1,15 @@
+DELIMITER ;;
+CREATE PROCEDURE `cambiar_clave`(usuario VARCHAR(11), clave_vieja VARCHAR(8), clave_nueva VARCHAR(8))
+BEGIN
+
+IF (SELECT activo FROM usuarios u WHERE u.`nombre_usuario` = usuario AND u.`clave` = clave_vieja) = 0 THEN
+	UPDATE usuarios SET `clave` = clave_nueva WHERE `nombre_usuario` = usuario;
+	SELECT "si" AS estado;
+
+ELSE
+	SELECT "no" AS estado;
+
+END IF;
+
+ 	
+END;;

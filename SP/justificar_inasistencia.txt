@@ -1,0 +1,13 @@
+DELIMITER ;;
+CREATE PROCEDURE `justificar_inasistencia`(f_id INT, f_jus TINYINT, f_obs VARCHAR(200), f_usuario VARCHAR(11))
+BEGIN
+
+UPDATE `lista_alumnos` 
+SET 
+`justificado` = f_jus,
+`observacion` = f_obs,
+`usuario` = f_usuario
+WHERE `id` = f_id;
+
+END;;
+DELIMITER ;

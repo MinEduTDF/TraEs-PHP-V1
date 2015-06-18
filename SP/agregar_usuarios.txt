@@ -1,0 +1,18 @@
+DELIMITER ;;
+CREATE PROCEDURE agregar_usuario (f_usuario varchar(11), f_nombre varchar(60), f_clave varchar(8), f_mail varchar(60), f_fecha_nac DATE, f_nivel int, f_activo tinyint)
+BEGIN 
+IF (SELECT nombre_usuario FROM usuarios WHERE nombre_usuario = f_usuario) IS NULL THEN
+    INSERT INTO usuarios (nombre_usuario, nombre, clave, mail, fecha_nac, nivel, activo)
+    VALUES (f_usuario, f_nombre, f_clave, f_mail, f_fecha_nac, f_nivel, f_activo);
+
+    SELECT u.nombre_usuario, u.nombre, 'nuevo' AS estado FROM usuarios WHERE nombre_usuario = f_usuario;
+
+ELSE
+
+    SELECT u.nombre_usuario, u.nombre, 'cargado' AS estado FROM usuarios WHERE nombre_usuario = f_usuario;
+
+END IF;
+
+END;;
+
+DELIMITER ;

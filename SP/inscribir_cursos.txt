@@ -1,0 +1,27 @@
+delimiter $$
+
+CREATE PROCEDURE `inscribir_cursos`(dni_bus INTEGER, tipocurso_bus INTEGER, curso_bus INTEGER, division_bus INTEGER, fecha_bus DATE, usuario_bus VARCHAR(11))
+BEGIN
+IF (SELECT dni FROM cursos_alumnos WHERE dni=dni_bus AND id_tipocurso=tipocurso_bus AND (fecha_hasta='' OR fecha_hasta is NULL)) > 0 THEN 
+    
+   SELECT t.`descripcion` AS tipocurso, c.`descripcion` AS curso, d.`descripcion` AS division, 'cargado' AS estado
+	FROM `cursos_alumnos` ca
+	INNER JOIN `tipo_curso` t ON t.`id_tipocurso` = ca.`id_tipocurso`
+	INNER JOIN `cursos` c ON c.`id_curso` = ca.`id_curso`
+	INNER JOIN `divisiones` d ON d.`id_division` = ca.`id_division`
+	WHERE ca.`dni` = dni_bus AND ca.`id_tipocurso`=tipocurso_bus AND (ca.fecha_hasta = '' OR ca.fecha_hasta is NULL);
+
+ELSE
+
+   INSERT INTO `cursos_alumnos` (`dni`, `id_tipocurso`, `id_curso`, `id_division`, `fecha_desde`, `usuario`)
+	VALUES (dni_bus, tipocurso_bus, curso_bus, division_bus, fecha_bus, usuario_bus);
+		
+	SELECT t.`descripcion` AS tipocurso, c.`descripcion` AS curso, d.`descripcion` AS division, 'nuevo' AS estado
+	FROM `cursos_alumnos` ca
+	INNER JOIN `tipo_curso` t ON t.`id_tipocurso` = ca.`id_tipocurso`
+	INNER JOIN `cursos` c ON c.`id_curso` = ca.`id_curso`
+	INNER JOIN `divisiones` d ON d.`id_division` = ca.`id_division`
+	WHERE ca.`dni` = dni_bus AND ca.`id_tipocurso`=tipocurso_bus AND ca.`id_curso`=curso_bus AND ca.`id_division`=division_bus AND ca.`fecha_desde`=fecha_bus AND ca.`usuario`=usuario_bus;
+
+END IF;	
+END$$
